@@ -40,7 +40,6 @@ import org.gradle.internal.component.model.IvyArtifactName;
 import org.gradle.internal.component.model.ModuleSources;
 import org.gradle.internal.component.model.VariantArtifactGraphResolveMetadata;
 import org.gradle.internal.component.model.VariantArtifactResolveState;
-import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.component.model.VariantResolveMetadata;
 import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.resolve.resolver.VariantArtifactResolver;
@@ -64,6 +63,7 @@ import java.util.stream.Collectors;
  * <p>The aim is to create only a single instance of this type per project and reuse that for all resolution that happens in a build tree. This isn't quite the case yet.
  */
 public class DefaultLocalComponentGraphResolveState extends AbstractComponentGraphResolveState<LocalComponentGraphResolveMetadata> implements LocalComponentGraphResolveState {
+
     private final ComponentIdGenerator idGenerator;
     private final boolean adHoc;
     private final VariantMetadataFactory variantFactory;
@@ -164,7 +164,7 @@ public class DefaultLocalComponentGraphResolveState extends AbstractComponentGra
         @Nullable Transformer<LocalComponentArtifactMetadata, LocalComponentArtifactMetadata> artifactTransformer
     ) {
         ImmutableList.Builder<LocalVariantGraphResolveState> variantsWithAttributes = new ImmutableList.Builder<>();
-        ImmutableMap.Builder<String, LocalVariantGraphResolveState> variantsByName = ImmutableMap.builder();
+        ImmutableMap.Builder<String, LocalVariantGraphResolveState> variantsByConfigurationName = ImmutableMap.builder();
 
         variantFactory.visitConsumableVariants(variant -> {
             if (artifactTransformer != null) {
@@ -180,13 +180,13 @@ public class DefaultLocalComponentGraphResolveState extends AbstractComponentGra
             }
 
             if (variant.getConfigurationName() != null) {
-                variantsByName.put(variant.getConfigurationName(), variantState);
+                variantsByConfigurationName.put(variant.getConfigurationName(), variantState);
             }
         });
 
         return new DefaultLocalComponentGraphSelectionCandidates(
             variantsWithAttributes.build(),
-            variantsByName.build()
+            variantsByConfigurationName.build()
         );
     }
 
@@ -385,7 +385,7 @@ public class DefaultLocalComponentGraphResolveState extends AbstractComponentGra
         }
 
         @Override
-        public List<? extends VariantGraphResolveState> getVariantsForAttributeMatching() {
+        public List<? extends LocalVariantGraphResolveState> getVariantsForAttributeMatching() {
             if (variantsWithAttributes.isEmpty()) {
                 throw new IllegalStateException("No variants available for attribute matching.");
             }
@@ -394,7 +394,7 @@ public class DefaultLocalComponentGraphResolveState extends AbstractComponentGra
 
         @Nullable
         @Override
-        public VariantGraphResolveState getVariantByConfigurationName(String name) {
+        public LocalVariantGraphResolveState getVariantByConfigurationName(String name) {
             return variantsByConfigurationName.get(name);
         }
 
