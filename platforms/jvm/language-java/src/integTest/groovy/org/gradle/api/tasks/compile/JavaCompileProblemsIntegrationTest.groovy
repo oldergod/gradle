@@ -251,7 +251,7 @@ class JavaCompileProblemsIntegrationTest extends AbstractIntegrationSpec {
             fqid == 'compilation:java:java-compilation-error'
             details == 'warnings found and -Werror specified'
             solutions.empty
-            additionalData["formatted"] == "error: warnings found and -Werror specified"
+            additionalData.asMap == ["formatted" : "error: warnings found and -Werror specified"]
         }
 
         // Based on the Java version, the types in the lint message will differ...
@@ -279,18 +279,18 @@ class JavaCompileProblemsIntegrationTest extends AbstractIntegrationSpec {
                 it.offset == 189
                 it.length == 21
             }
-            additionalData["formatted"] == """$fooFileLocation:5: warning: [cast] redundant cast to $expectedType
+            additionalData.asMap == ["formatted" : """$fooFileLocation:5: warning: [cast] redundant cast to $expectedType
                     String s = (String)"Hello World";
-                               ^"""
+                               ^"""]
         }
         verifyAll(receivedProblem(2)) {
             assertProblem(it, "WARNING", true)
             fqid == 'compilation:java:java-compilation-warning'
             details == 'redundant cast to java.lang.String'
             solutions.empty
-            additionalData["formatted"] == """${fooFileLocation}:10: warning: [cast] redundant cast to $expectedType
+            additionalData.asMap == ["formatted" : """${fooFileLocation}:10: warning: [cast] redundant cast to $expectedType
                     String s = (String)"Hello World";
-                               ^"""
+                               ^"""]
         }
     }
 

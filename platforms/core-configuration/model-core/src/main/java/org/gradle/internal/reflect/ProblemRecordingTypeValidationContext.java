@@ -22,6 +22,7 @@ import org.gradle.api.problems.internal.InternalProblemReporter;
 import org.gradle.api.problems.internal.InternalProblems;
 import org.gradle.api.problems.internal.Problem;
 import org.gradle.api.problems.internal.ProblemsProgressEventEmitterHolder;
+import org.gradle.api.problems.internal.TypeValidationDataSpec;
 import org.gradle.internal.reflect.validation.DefaultTypeAwareProblemBuilder;
 import org.gradle.internal.reflect.validation.TypeAwareProblemBuilder;
 import org.gradle.internal.reflect.validation.TypeValidationContext;
@@ -30,8 +31,6 @@ import org.gradle.plugin.use.PluginId;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import static org.gradle.internal.reflect.validation.DefaultTypeAwareProblemBuilder.PLUGIN_ID;
 
 abstract public class ProblemRecordingTypeValidationContext implements TypeValidationContext {
     private final Class<?> rootType;
@@ -58,7 +57,6 @@ abstract public class ProblemRecordingTypeValidationContext implements TypeValid
         return pluginId.get();
     }
 
-
     @Override
     public void visitPropertyProblem(Action<? super TypeAwareProblemBuilder> problemSpec) {
         InternalProblemReporter reporter = ProblemsProgressEventEmitterHolder.get().getInternalReporter();
@@ -67,7 +65,7 @@ abstract public class ProblemRecordingTypeValidationContext implements TypeValid
         problemBuilder.withAnnotationType(rootType);
         pluginId()
             .map(PluginId::getId)
-            .ifPresent(id -> problemBuilder.additionalData(PLUGIN_ID, id));
+            .ifPresent(id -> problemBuilder.additionalData(TypeValidationDataSpec.class, data -> data.pluginId(id)));
         recordProblem(problemBuilder.build());
     }
 
