@@ -84,7 +84,6 @@ dependencies {
     implementation(project(":tooling-api"))
 
     implementation(libs.asm)
-    implementation(libs.capsule)
     implementation(libs.fastutil)
     implementation(libs.groovyJson)
     implementation(libs.jsr305)
