@@ -25,7 +25,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.Dependen
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.ResolvedGraphVariant;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.RootGraphNode;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.DefaultResolutionResultBuilder;
-import org.gradle.api.internal.artifacts.result.DefaultMinimalResolutionResult;
 import org.gradle.api.internal.artifacts.result.MinimalResolutionResult;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 
@@ -69,6 +68,6 @@ public class InMemoryResolutionResultBuilder implements DependencyGraphVisitor {
         if (requestAttributes == null) {
             throw new IllegalStateException("Resolution result not computed yet");
         }
-        return new DefaultMinimalResolutionResult(() -> root, requestAttributes);
+        return new MinimalResolutionResult(() -> root, requestAttributes);
     }
 }
