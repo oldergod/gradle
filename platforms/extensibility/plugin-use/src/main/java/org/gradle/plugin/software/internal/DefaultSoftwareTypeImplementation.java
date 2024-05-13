@@ -18,6 +18,7 @@ package org.gradle.plugin.software.internal;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.initialization.Settings;
 
 import java.util.Objects;
 
@@ -28,12 +29,16 @@ import java.util.Objects;
 public class DefaultSoftwareTypeImplementation implements SoftwareTypeImplementation {
     private final String softwareType;
     private final Class<?> modelPublicType;
-    private final Class<? extends Plugin<?>> pluginClass;
+    private final Class<? extends Plugin<Project>> pluginClass;
+    private final Class<? extends Plugin<Settings>> registeringPluginClass;
 
-    public DefaultSoftwareTypeImplementation(String softwareType, Class<?> modelPublicType, Class<? extends Plugin<Project>> pluginClass) {
+    public DefaultSoftwareTypeImplementation(String softwareType, Class<?> modelPublicType,
+                                             Class<? extends Plugin<Project>> pluginClass,
+                                             Class<? extends Plugin<Settings>> registeringPluginClass) {
         this.softwareType = softwareType;
         this.modelPublicType = modelPublicType;
         this.pluginClass = pluginClass;
+        this.registeringPluginClass = registeringPluginClass;
     }
 
     @Override
@@ -47,8 +52,13 @@ public class DefaultSoftwareTypeImplementation implements SoftwareTypeImplementa
     }
 
     @Override
-    public Class<? extends Plugin<?>> getPluginClass() {
+    public Class<? extends Plugin<Project>> getPluginClass() {
         return pluginClass;
+    }
+
+    @Override
+    public Class<? extends Plugin<Settings>> getRegisteringPluginClass() {
+        return registeringPluginClass;
     }
 
     @Override
