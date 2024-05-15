@@ -28,7 +28,6 @@ description = "Entry point of the Gradle wrapper command"
 gradlebuildJava.usedInWorkers()
 
 dependencies {
-    implementation(projects.javaLanguageExtensions)
     implementation(project(":cli"))
     implementation(project(":wrapper-shared"))
 
