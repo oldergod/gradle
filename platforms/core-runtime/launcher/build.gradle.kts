@@ -43,7 +43,7 @@ dependencies {
     implementation(project(":core-api"))
     implementation(project(":core"))
     implementation(project(":model-core"))
-    implementation(project(":bootstrap"))
+    implementation(project(":gradle-main"))
     implementation(project(":jvm-services"))
     implementation(project(":build-events"))
     implementation(project(":build-state"))
@@ -72,7 +72,7 @@ dependencies {
     runtimeOnly(libs.commonsLang)
     runtimeOnly(libs.slf4jApi)
 
-    manifestClasspath(project(":bootstrap"))
+    manifestClasspath(project(":gradle-main"))
     manifestClasspath(projects.javaLanguageExtensions)
     manifestClasspath(project(":base-services"))
     manifestClasspath(project(":worker-services"))
