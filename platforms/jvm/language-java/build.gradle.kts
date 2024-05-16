@@ -40,7 +40,7 @@ dependencies {
     api(project(":test-suites-base"))
     api(project(":toolchains-jvm"))
     api(project(":toolchains-jvm-shared"))
-    api(project(":worker-processes"))
+    api(project(":worker-main"))
     api(project(":workers"))
 
     api(libs.asm)

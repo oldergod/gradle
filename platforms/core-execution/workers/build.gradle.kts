@@ -9,7 +9,7 @@ dependencies {
     implementation(project(":messaging"))
     implementation(project(":logging"))
     implementation(project(":process-services"))
-    implementation(project(":worker-processes"))
+    implementation(project(":worker-main"))
     implementation(project(":persistent-cache"))
     implementation(project(":core-api"))
     implementation(project(":model-core"))
