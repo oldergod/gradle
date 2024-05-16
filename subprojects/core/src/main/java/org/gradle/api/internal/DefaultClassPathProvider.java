@@ -28,7 +28,9 @@ public class DefaultClassPathProvider implements ClassPathProvider {
     @Override
     public ClassPath findClassPath(String name) {
         if (name.equals("GRADLE_RUNTIME")) {
-            return moduleRegistry.getModule("gradle-launcher").getAllRequiredModulesClasspath();
+            ClassPath classpath = moduleRegistry.getModule("gradle-launcher").getAllRequiredModulesClasspath();
+            classpath = classpath.plus(moduleRegistry.getModule("gradle-daemon-main").getAllRequiredModulesClasspath());
+            return classpath;
         }
         if (name.equals("GRADLE_INSTALLATION_BEACON")) {
             return moduleRegistry.getModule("gradle-installation-beacon").getImplementationClasspath();

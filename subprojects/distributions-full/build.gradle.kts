@@ -8,6 +8,7 @@ description = "The collector project for the entirety of the Gradle distribution
 
 dependencies {
     coreRuntimeOnly(platform(project(":core-platform")))
+    coreRuntimeOnly(project(":daemon-main"))
 
     agentsRuntimeOnly(project(":instrumentation-agent"))
 
