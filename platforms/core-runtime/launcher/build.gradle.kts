@@ -79,6 +79,7 @@ dependencies {
     manifestClasspath(project(":core-api"))
     manifestClasspath(project(":core"))
     manifestClasspath(project(":persistent-cache"))
+    manifestClasspath(project(":daemon-main"))
 
     agentsClasspath(project(":instrumentation-agent"))
 
