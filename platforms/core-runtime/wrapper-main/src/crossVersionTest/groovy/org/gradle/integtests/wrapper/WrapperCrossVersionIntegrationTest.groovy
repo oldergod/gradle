@@ -17,17 +17,31 @@ package org.gradle.integtests.wrapper
 
 
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
+import org.gradle.integtests.fixtures.executer.DefaultGradleDistribution
 import org.gradle.integtests.fixtures.executer.GradleDistribution
 import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executer.ReleasedGradleDistribution
+import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 import org.gradle.test.preconditions.UnitTestPreconditions
+import org.gradle.util.GradleVersion
 
 @SuppressWarnings("IntegrationTestFixtures")
 class WrapperCrossVersionIntegrationTest extends AbstractWrapperCrossVersionIntegrationTest {
     void canUseWrapperFromPreviousVersionToRunCurrentVersion() {
         when:
         GradleExecuter executer = prepareWrapperExecuter(previous, current)
+
+        println "CHECK BIN DISTRIBUTION"
+
+        def outdir = file("tmp")
+        current.binDistribution.unzipTo(outdir)
+
+        def homeDir = outdir.file("gradle-" + GradleVersion.current().baseVersion.version)
+        homeDir.file("bin/gradle").setExecutable(true)
+        def exec = version(new DefaultGradleDistribution(GradleVersion.current(), homeDir, current.binDistribution))
+        exec.withTasks("hello").run()
 
         then:
         checkWrapperWorksWith(executer, current)
