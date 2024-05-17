@@ -101,6 +101,7 @@ val core = platform("core") {
         subproject("process-services")
         subproject("serialization")
         subproject("time")
+        subproject("tooling-api-provider")
         subproject("worker-services")
         subproject("wrapper-main")
         subproject("wrapper-shared")
