@@ -21,8 +21,16 @@ plugins {
 description = "The Tooling API provider implementation (the version-specific part that is loaded into the client)"
 
 dependencies {
+    api(project(":tooling-api"))
+
+    implementation(libs.jsr305)
+    implementation(libs.slf4jApi)
     implementation(project(":launcher"))
-    implementation(project(":logging-api"))
-    implementation(project(":tooling-api"))
     implementation(project(":build-state"))
+    implementation(project(":base-services"))
+    implementation(project(":core"))
+    implementation(project(":core-api"))
+    implementation(project(":java-language-extensions"))
+    implementation(project(":logging"))
+    implementation(project(":native"))
 }
