@@ -17,7 +17,9 @@
 package org.gradle.api.plugins;
 
 import org.gradle.api.file.CopySpec;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * Configuration for a Java application, defining how to assemble the application.
@@ -41,12 +43,8 @@ public interface JavaApplication {
     /**
      * The name of the application.
      */
-    String getApplicationName();
-
-    /**
-     * The name of the application.
-     */
-    void setApplicationName(String applicationName);
+    @ReplacesEagerProperty
+    Property<String> getApplicationName();
 
     /**
      * The name of the application's Java module if it should run as a module.
@@ -65,22 +63,14 @@ public interface JavaApplication {
     /**
      * Array of string arguments to pass to the JVM when running the application
      */
-    Iterable<String> getApplicationDefaultJvmArgs();
-
-    /**
-     * Array of string arguments to pass to the JVM when running the application
-     */
-    void setApplicationDefaultJvmArgs(Iterable<String> applicationDefaultJvmArgs);
+    @ReplacesEagerProperty(originalType = Iterable.class)
+    ListProperty<String> getApplicationDefaultJvmArgs();
 
     /**
      * Directory to place executables in
      */
-    String getExecutableDir();
-
-    /**
-     * Directory to place executables in
-     */
-    void setExecutableDir(String executableDir);
+    @ReplacesEagerProperty
+    Property<String> getExecutableDir();
 
     /**
      * <p>The specification of the contents of the distribution.</p>
