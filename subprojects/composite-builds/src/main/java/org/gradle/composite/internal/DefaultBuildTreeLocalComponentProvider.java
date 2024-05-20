@@ -30,13 +30,14 @@ import org.gradle.internal.build.CompositeBuildParticipantBuildState;
 import org.gradle.internal.build.IncludedBuildState;
 import org.gradle.internal.component.local.model.LocalComponentGraphResolveState;
 import org.gradle.internal.component.local.model.LocalComponentGraphResolveStateFactory;
-import org.gradle.internal.component.local.model.LocalComponentMetadata;
+import org.gradle.internal.component.local.model.LocalComponentGraphResolveMetadata;
 import org.gradle.internal.model.CalculatedValueContainer;
 import org.gradle.internal.model.CalculatedValueContainerFactory;
 import org.gradle.util.Path;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -109,7 +110,7 @@ public class DefaultBuildTreeLocalComponentProvider implements BuildTreeLocalCom
 
         // Get the local component, then transform it to have a foreign identifier
         // This accesses project state.
-        LocalComponentMetadata metadata = projectState.fromMutableState(p -> {
+        LocalComponentGraphResolveMetadata metadata = projectState.fromMutableState(p -> {
             LocalComponentGraphResolveState originalComponent = getLocalComponent(projectIdentifier, projectState);
             ProjectComponentIdentifier foreignIdentifier = buildState.idToReferenceProjectFromAnotherBuild(projectIdentifier);
             return originalComponent.copy(foreignIdentifier, originalArtifact -> {
@@ -139,7 +140,7 @@ public class DefaultBuildTreeLocalComponentProvider implements BuildTreeLocalCom
 
         private LocalComponentGraphResolveState computeIfAbsent(ProjectComponentIdentifier projectIdentifier, Factory<LocalComponentGraphResolveState> factory) {
             CalculatedValueContainer<LocalComponentGraphResolveState, ?> valueContainer = cache.computeIfAbsent(projectIdentifier, projectComponentIdentifier ->
-                calculatedValueContainerFactory.create(Describables.of("metadata of", projectIdentifier), context -> factory.create()));
+                calculatedValueContainerFactory.create(Describables.of("metadata of", projectIdentifier), context -> Objects.requireNonNull(factory.create())));
             // Calculate the value after adding the entry to the map, so that the value container can take care of thread synchronization
             valueContainer.finalizeIfNotAlready();
             return valueContainer.get();
