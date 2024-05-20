@@ -16,9 +16,7 @@
 
 package org.gradle.plugin.devel.tasks
 
-
 import org.gradle.test.fixtures.file.TestFile
-import org.gradle.util.internal.TextUtil
 
 import static org.gradle.util.internal.TextUtil.getPluralEnding
 import static org.hamcrest.Matchers.containsString
@@ -69,19 +67,6 @@ trait ValidatePluginsTrait implements CommonPluginValidationTrait {
         messages.forEach { problem ->
             String indentedMessage = problem.message.replaceAll('\n', '\n    ').trim()
             failure.assertThatCause(containsString("$problem.severity: $indentedMessage"))
-        }
-
-        // TODO (donat) do probably don't want to have this, as the explicit problem assertions are preferred
-        def problems = collectedProblems
-        assert problems.size() == messages.size()
-        problems.any { problem ->
-            messages.any { message ->
-                if (message.config) {
-                    TextUtil.endLineWithDot(problem.definition.id.displayName) == message.config.label().toString()
-                } else {
-                    message.message.contains(TextUtil.endLineWithDot(problem.definition.id.displayName))
-                }
-            }
         }
     }
 
