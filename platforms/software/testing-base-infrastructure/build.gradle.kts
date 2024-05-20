@@ -10,8 +10,6 @@ dependencies {
     api(projects.baseServices)
     api(projects.concurrent)
     api(projects.javaLanguageExtensions)
-    api(projects.logging)
-    api(projects.loggingApi)
     api(projects.serialization)
     api(projects.time)
     api(projects.workerProcesses)
